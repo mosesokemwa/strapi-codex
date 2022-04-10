@@ -106,4 +106,5 @@ dist
 node_modules
 .DS_store
 .env
-db.js
+src/config/db.js
+.envrc

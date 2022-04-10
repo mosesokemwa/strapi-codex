@@ -1,0 +1,1 @@
+psql -U postgres -c "CREATE DATABASE $DB_NAME WITH OWNER $DB_USER";

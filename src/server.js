@@ -1,28 +1,15 @@
+require("dotenv").config();
 const Koa = require('koa');
 const Router = require('@koa/router');
-const {graphqlHTTP} = require('koa-graphql');
-const { buildSchema } = require('graphql');
+
+
+const indexRoutes = require('./routes/index');
 
 const app = new Koa();
-const router = new Router();
 
-const schema = buildSchema(`
-    type Query {
-        hello: String
-    }
-`);
+app.use(indexRoutes.routes());
 
-const root = {
-    hello: () => 'Hello world!'
-};
-
-router.all('/graphql',
-    graphqlHTTP({
-        schema: schema,
-        graphiql: true,
-        rootValue: root
-    }));
-app.use(router.routes()).use(router.allowedMethods());
+// app.use(router.routes()).use(router.allowedMethods());
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, _ => console.log('Server is running on port 3000'));
+app.listen(PORT, _ => console.log(`Server is running on port ${PORT} on ${process.env.NODE_ENV}`));

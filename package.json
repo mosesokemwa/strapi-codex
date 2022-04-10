@@ -6,7 +6,12 @@
   "private": true,
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "db:make": "knex migrate:make --client pg",
+    "db:upgrade": "knex migrate:latest",
+    "db:rollback": "knex migrate:rollback --client pg",
+    "seed:make": "knex seed:make --client pg",
+    "seed:run": "knex seed:run"
   },
   "dependencies": {
     "@koa/router": "^10.1.1",

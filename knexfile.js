@@ -1,12 +1,17 @@
 // Update with your config settings.
-const path = require('path');
-const BASE_PATH = path.join(__dirname, 'db');
-let connections;
 
+/**
+ * @type { Object.<string, import("knex").Knex.Config> }
+ */
+const path = require('path');
+
+const BASE_PATH = path.join(__dirname, 'src', 'db');
+
+let connections;
 try {
-  connections = require('./config/db');
+  connections = require('./src/config/db');
 } catch (e) {
-  connections = require('./config/db.example');
+  connections = require('./src/config/db.example');
 }
 
 const {
@@ -29,31 +34,6 @@ if (user && host && database && password) {
 }
 
 module.exports = {
-  ci: {
-    client: 'pg',
-    connection: {
-      port: process.env.PG_PORT,
-      host: process.env.PG_HOST,
-      database: process.env.PG_NAME,
-      user: process.env.PG_USER
-    },
-    migrations: {
-      directory: path.join(BASE_PATH, 'migrations')
-    },
-    seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
-    }
-  },
-  action: {
-    client: 'pg',
-    connection: env_credentials || connections.action,
-    migrations: {
-      directory: path.join(BASE_PATH, 'migrations')
-    },
-    seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
-    }
-  },
   test: {
     client: 'pg',
     connection: env_credentials || connections.test,
@@ -65,32 +45,14 @@ module.exports = {
     }
   },
   development: {
-    debug: true,
     client: 'pg',
-    connection: env_credentials || connections.development,
+    // connection: env_credentials || connections.development,
+    connection: 'postgres://localhost/strapi_dev',
     migrations: {
       directory: path.join(BASE_PATH, 'migrations')
     },
     seeds: {
       directory: path.join(BASE_PATH, 'seeds')
-    },
-  },
-  production: {
-    client: 'pg',
-    connection: env_credentials || connections.production,
-    migrations: {
-      directory: path.join(BASE_PATH, 'migrations')
-    },
-    seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
-    },
-    log: {
-      error(message) {
-        console.log(message);
-      },
-      debug(message) {
-        console.log(message);
-      },
     }
   }
 };
