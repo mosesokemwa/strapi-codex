@@ -12,6 +12,14 @@ knex.select(knex.raw('1')).then(() => {
   throw e;
 });
 
+// async function logPlanets() {
+//   const planets = await knex('planet');
+//   console.log('------await planets-------');
+//   console.log(await planets);
+// }
+
+// logPlanets();
+
 module.exports = knex;
 
 module.exports.reconnect = () => require('knex')(config);

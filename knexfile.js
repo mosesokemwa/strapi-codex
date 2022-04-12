@@ -46,13 +46,13 @@ module.exports = {
   },
   development: {
     client: 'pg',
-    // connection: env_credentials || connections.development,
-    connection: 'postgres://localhost/strapi_dev',
+    connection: env_credentials || connections.development,
     migrations: {
       directory: path.join(BASE_PATH, 'migrations')
     },
     seeds: {
       directory: path.join(BASE_PATH, 'seeds')
-    }
+    },
+    debug: true
   }
 };

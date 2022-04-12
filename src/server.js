@@ -1,8 +1,5 @@
 require("dotenv").config();
 const Koa = require('koa');
-const Router = require('@koa/router');
-
-
 const indexRoutes = require('./routes/index');
 
 const app = new Koa();
