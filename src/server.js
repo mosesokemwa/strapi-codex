@@ -3,24 +3,14 @@ const Koa = require('koa');
 const { typeDefs, resolvers } = require('./graphql/schema');
 const { ApolloServer, gql } = require("apollo-server-koa");
 
-
-
-// const formatResponse = (re) => {
-//     console.log("ctx.response.body : ", ctx.response.body);
-//     return ctx;
-// };
+const schema = require('./graphql/index');
 
 
 const formatResponse = (re) => {
     // console.log("ctx.response.body : ", re);
     return re;
 };
-const { makeExecutableSchema } = require('@graphql-tools/schema');
 
-const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers
-});
 async function startServer() {
     const server = new ApolloServer({
         schema,
@@ -28,7 +18,6 @@ async function startServer() {
             maxFileSize: 10000000, // 10 MB
             maxFiles: 20
         },
-        // resolvers,
         formatResponse
     });
     await server.start();
