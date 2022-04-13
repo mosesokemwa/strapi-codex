@@ -306,9 +306,10 @@ Authentication is not yet supported
 
 
 ### Improvements
-- Install and cache ``node_modules`` to reduce build time
-- Add auth using token to the graphql server
+- Cache ``node_modules`` during docker build time to reduce build time
+- Add auth token to the graphql endpoint
 - Provide metrics for the graphql server queries
 - Create a health check endpoint
 - JSON API docs
 - Seed data for all models
+- Make use [PM2](https://pm2.io/docs/runtime/overview/) for production deployment
