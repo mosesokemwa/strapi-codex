@@ -4,6 +4,7 @@ Getting started with Strapi Codex is easy.
 
 - Install all dependencies ``yarn``
 - Install Docker or start docker daemons
+- Copy ``config/db.example.js`` to ``config/db.js`` (not necessary for local development)
 
 To run the project locally, run the following command:
 On your terminal run:
