@@ -55,5 +55,15 @@ module.exports = {
       directory: path.join(BASE_PATH, 'seeds')
     },
     debug: true
+  },
+  production: {
+    client: 'pg',
+    connection: env_credentials || connections.production,
+    migrations: {
+      directory: path.join(BASE_PATH, 'migrations')
+    },
+    seeds: {
+      directory: path.join(BASE_PATH, 'seeds')
+    },
   }
 };
