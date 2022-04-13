@@ -5,6 +5,7 @@ Getting started with Strapi Codex is easy.
 - Install all dependencies ``yarn``
 - Install Docker or start docker daemons
 - Copy ``config/db.example.js`` to ``config/db.js`` (not necessary for local development)
+- graphql endpoint requires a jwt token, visit [the home page](http://localhost:3000) to get token. The token kis valid up to a week.
 
 To run the project locally, run the following command:
 On your terminal run:
@@ -307,10 +308,12 @@ Authentication is not yet supported
 
 
 ### Improvements
+- [x] Add auth token to the graphql endpoint
 - Cache ``node_modules`` during docker build time to reduce build time
-- Add auth token to the graphql endpoint
 - Provide metrics for the graphql server queries
 - Create a health check endpoint
 - JSON API docs
 - Seed data for all models
 - Make use [PM2](https://pm2.io/docs/runtime/overview/) for production deployment
+- Simple error handling
+- Logger util for all requests

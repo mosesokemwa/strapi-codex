@@ -1,8 +1,10 @@
+require('dotenv').config()
 const Koa = require('koa');
+const KoaRouter = require('@koa/router');
 const { ApolloServer } = require("apollo-server-koa");
-
 const schema = require('./graphql/index');
-
+const getUser = require("./utils/isAuthorized");
+const { signToken } = require("./utils/authToken");
 
 const formatResponse = (re) => {
     return re;
@@ -15,40 +17,43 @@ async function startServer() {
             maxFileSize: 10000000, // 10 MB
             maxFiles: 20
         },
-        formatResponse
+        formatResponse,
+        context: async ({ ctx }) => {
+            const token = ctx.request.headers.authorization || "";
+            const user = await getUser(token);
+            if (!user) throw new AuthenticationError('you must be logged in');
+            return { user };
+        },
+
     });
     await server.start();
     server.applyMiddleware({ app, path: "/graphql" });
 }
 startServer();
 
-const app = new Koa();
 
+
+const app = new Koa();
+const router = new KoaRouter();
+
+// jwt token endpoint
+router.get('/', (ctx) => {
+    const data = {
+        "name": "Moses Okemwa",
+        "email": "okemwamoses@gmail.com",
+        "company_email": "okemwamoses@strapi.io",
+        "role": "Senior Backend Engineer",
+        "location": "remote",
+        "id": 1,
+        "user_id": 1,
+        "org": "strapi",
+        "start_date": "2022-05-01 21:35:02.028065+03",
+        "reason": "I nejoyed working on this projects, wil loove to work at Strapi to grow the company"
+    }
+    ctx.status = 200;
+    ctx.body = { token: signToken(data) };
+});
+
+app.use(router.routes()).use(router.allowedMethods());
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, _ => console.log(`Server is running on port ${PORT} on ${process.env.NODE_ENV}`));
-// const { ApolloServer } = require('apollo-server-koa');
-// const { ApolloServerPluginDrainHttpServer } = require('apollo-server-core');
-// const Koa = require('koa');
-// const http = require('http');
-// const schema = require('./graphql/index');
-// const PORT = process.env.PORT || 3000;
-
-
-// async function startApolloServer(schema) {
-//     const httpServer = http.createServer();
-//     const server = new ApolloServer({
-//         schema,
-//         plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-//     });
-
-//     await server.start();
-//     const app = new Koa();
-//     server.applyMiddleware({ app, path: "/graphql" });
-//     httpServer.on('request', app.callback());
-//     await new Promise(resolve => httpServer.listen({ port: PORT }, resolve));
-//     // console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
-//     return { server, app };
-// }
-
-// const { server } = startApolloServer(schema);
-// module.exports = server;

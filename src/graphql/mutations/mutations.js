@@ -1,6 +1,3 @@
-
-
-
 const ScheduleFlightInput = `
 input ScheduleFlightInput {
     code: String,
@@ -20,7 +17,6 @@ input ScheduleFlightInput {
   }
   `;
 
-  // bookFlight(flightId: String, email: String, seatCount: Int, availableSeats: Int): Booking,
   const Mutation = `
     type Mutation {
       scheduleFlight(flightInfo: ScheduleFlightInput): Flight,

@@ -76,8 +76,6 @@ const BookingsResolvers = {
         // .join('flight', 'flight.id', 'booking.flight_id')
         // .offset(offset).limit(pageSize);
         nodes = nodes[0];
-
-        console.log(nodes);
         return {
             pagination: {
                 total: total[0].total,
@@ -99,33 +97,20 @@ const BookingsResolvers = {
 
 const scheduleFlightMutation = {
     async scheduleFlight(_, { flightInfo }) {
-        const flight = await knex('flight').insert({
-            departure_at: flightInfo.departureAt,
-            seat_count: flightInfo.seatCount,
-            code: flightInfo.code,
-            landing_site_id: flightInfo.landingSiteId,
-            launching_site_id: flightInfo.launchSiteId,
-        }).returning('*');
-        flight[0].seatCount = flight[0].seat_count;
-        flight[0].departureAt = flight[0].departure_at
-        flight[0].AvailableSeats = flight[0].available_seats;
+        const flight = await knex('flight').insert(flightInfo).returning('*');
         return await flight[0];
 
     }
 };
 
 const BookFlightMutation = {
-    async bookFlight(_, { bookingInfo}) {
-        const flight = await knex('flight').where('id', args.bookingInfo.flightId).first();
+    async bookFlight(_, { bookingInfo }) {
+        const flight = await knex('flight').where('id', bookingInfo.flightId).first();
         if (!flight) {
             throw new Error('Flight not found');
         }
-        const booking = await knex('booking').insert({
-            email: args.email,
-            flight_id: args.flightId,
-            seat_count: args.seatCount,
-        });
-        return bookingInfo;
+        const booking = await knex('booking').insert(bookingInfo).returning('*');
+        return booking[0];
     }
 };
 const resolvers = {
@@ -154,8 +139,8 @@ const resolvers = {
             return parent.pagination;
         },
         async planet(parent, args, context, info) {
-            if (parent.planet_code) {
-                const planet = await knex('planet').where('code', parent.planet_code).first();
+            if (parent.planetCode) {
+                const planet = await knex('planet').where('code', parent.planetCode).first();
                 return planet;
             }
         }
@@ -168,13 +153,13 @@ const resolvers = {
             return parent.pagination;
         },
         async launchSite(parent, args, context, info) {
-            if (parent.launching_site_id) {
-                return await knex('space_center').where('uid', parent.launching_site_id).first();
+            if (parent.launchSiteId) {
+                return await knex('space_center').where('uid', parent.launchSiteId).first();
             }
         },
         async landingSite(parent, args, context, info) {
-            if (parent.landing_site_id) {
-                return await knex('space_center').where('uid', parent.landing_site_id).first();
+            if (parent.landingSiteId) {
+                return await knex('space_center').where('uid', parent.landingSiteId).first();
             }
         }
     },
@@ -183,11 +168,10 @@ const resolvers = {
             return parent.pagination;
         },
         async nodes(parent, args, context, info) {
-            parent.nodes.seatCount = parent.nodes.seat_count;
             return parent.nodes;
         },
         async flight(parent, args, context, info) {
-            const flight = await knex('flight').where('id', parent.flight_id).first();
+            const flight = await knex('flight').where('id', parent.flightId).first();
             if (!flight) {
                 throw new Error('Flight not found');
             }
