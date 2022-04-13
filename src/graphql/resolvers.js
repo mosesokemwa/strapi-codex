@@ -99,26 +99,32 @@ const BookingsResolvers = {
 
 const scheduleFlightMutation = {
     async scheduleFlight(_, { flightInfo }) {
-        console.log('----flightInfo----', flightInfo);
-        // const flight = await knex('flight').insert(flightInfo);
-        // return flight;
+        const flight = await knex('flight').insert({
+            departure_at: flightInfo.departureAt,
+            seat_count: flightInfo.seatCount,
+            code: flightInfo.code,
+            landing_site_id: flightInfo.landingSiteId,
+            launching_site_id: flightInfo.launchSiteId,
+        }).returning('*');
+        flight[0].seatCount = flight[0].seat_count;
+        flight[0].departureAt = flight[0].departure_at
+        flight[0].AvailableSeats = flight[0].available_seats;
+        return await flight[0];
 
     }
 };
 
 const BookFlightMutation = {
     async bookFlight(_, { bookingInfo}) {
-        console.log('----bookingInfo----');
-        console.log(bookingInfo);
-        // const flight = await knex('flight').where('id', args.bookingInfo.flightId).first();
-        // if (!flight) {
-        //     throw new Error('Flight not found');
-        // }
-        // const booking = await knex('booking').insert({
-        //     email: args.email,
-        //     flight_id: args.flightId,
-        //     seat_count: args.seatCount,
-        // });
+        const flight = await knex('flight').where('id', args.bookingInfo.flightId).first();
+        if (!flight) {
+            throw new Error('Flight not found');
+        }
+        const booking = await knex('booking').insert({
+            email: args.email,
+            flight_id: args.flightId,
+            seat_count: args.seatCount,
+        });
         return bookingInfo;
     }
 };

@@ -25,6 +25,7 @@ exports.up = function(knex) {
         table.string('code').references('code').inTable('planet');
         table.dateTime('departure_at').defaultTo(knex.fn.now());
         table.integer('seat_count').defaultTo(0);
+        table.integer('available_seats').defaultTo(0);
         table.string('launching_site_id').references('uid').inTable('space_center').onDelete('SET NULL');
         table.string('landing_site_id').references('uid').inTable('space_center').onDelete('SET NULL');
         table.timestamps(true, true);

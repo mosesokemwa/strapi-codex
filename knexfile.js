@@ -42,7 +42,8 @@ module.exports = {
     },
     seeds: {
       directory: path.join(BASE_PATH, 'seeds')
-    }
+    },
+    debug: false
   },
   development: {
     client: 'pg',

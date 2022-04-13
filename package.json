@@ -11,7 +11,8 @@
     "db:upgrade": "knex migrate:latest",
     "db:rollback": "knex migrate:rollback --client pg",
     "seed:make": "knex seed:make --client pg",
-    "seed:run": "knex seed:run"
+    "seed:run": "knex seed:run",
+    "test": "jest --detectOpenHandles  --forceExit"
   },
   "dependencies": {
     "@graphql-tools/schema": "^8.3.7",
@@ -23,5 +24,10 @@
     "koa": "^2.13.4",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "apollo-server-testing": "^2.25.3",
+    "jest": "^27.5.1",
+    "supertest": "^6.2.2"
   }
 }

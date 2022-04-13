@@ -7,7 +7,7 @@ module.exports = {
     test: {
       host: 'localhost',
       database: 'strapi_test',
-      user: 'strapi',
+      user: 'postgres',
       password: 'password',
       port: '5432'
     },
