@@ -317,3 +317,4 @@ Authentication is not yet supported
 - Make use [PM2](https://pm2.io/docs/runtime/overview/) for production deployment
 - Simple error handling
 - Logger util for all requests
+- Extend auth [referencing GraphQl docs](https://www.apollographql.com/docs/apollo-server/security/authentication/)
